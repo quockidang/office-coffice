@@ -23,6 +23,6 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::post('details', 'Api\UserController@details');
     Route::post('update', 'Api\UserController@update');
 });
-
-Route::get('products', 'Api\ProductController@index');
+Route::get('products/{id}', 'Api\ProductController@GetProductByCategory');
+//Route::get('products', 'Api\ProductController@index');
 Route::get('categories', 'Api\CategoryController@index');
