@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,6 +23,10 @@ Route::post('register', 'Api\UserController@store');
 Route::group(['middleware' => ['auth:api']], function(){
     Route::post('details', 'Api\UserController@details');
     Route::post('update', 'Api\UserController@update');
+
+
+    
+
 });
 Route::get('products/{id}', 'Api\ProductController@GetProductByCategory');
 //Route::get('products', 'Api\ProductController@index');

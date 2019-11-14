@@ -23,79 +23,69 @@ class ProductController extends Controller
 
     public function index()
     {
-        if (Auth::user()->role_id == 1) {
-            //$products = $this->productReposotory->getAll()->simplePaginate(5);
-            //$products = $products
-            $products = Product::simplePaginate(5);
-            Session::put('success', 'Load danh sách sản phẩm thành công');
-            return view('backend.product.index', compact('products'));
-        } else {
-            Session::put('error', 'Account không có quyền');
-            return Redirect::to('dashboard');
-        }
+
+        //$products = $this->productReposotory->getAll()->simplePaginate(5);
+        //$products = $products
+        $products = Product::simplePaginate(5);
+        Session::put('success', 'Load danh sách sản phẩm thành công');
+        return view('backend.product.index', compact('products'));
     }
 
     public function add(Request $req)
     {
-        if (Auth::user()->role_id == 1) {
 
-            $productAdd = new Product;
-            $productAdd->category_id = $req->category_id;
-            $productAdd->name = $req->name;
-            $productAdd->price = $req->price;
-            $productAdd->description = $req->description;
-            $productAdd->content = $req->content;
-            $productAdd->price = $req->price;
-            $productAdd->price_L = $req->price_L;
-            $productAdd->promotion_price =  $req->promotion_price;
-            $get_image = $req->file('image');
-            $name_image = current(explode('.', $get_image->getClientOriginalName()));
-            $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
-            $get_image->move('source/images', $new_image);
-            $productAdd->image = $new_image;
-            $productAdd->save();
-            Session::put('success', 'Add sản phẩm thành công');
-            return Redirect::to('product/index');
-        } else {
-            Session::put('error', 'Account không có quyền');
-            return Redirect::to('dashboard');
-        }
+
+        $productAdd = new Product;
+        $productAdd->category_id = $req->category_id;
+        $productAdd->name = $req->name;
+        $productAdd->price = $req->price;
+        $productAdd->description = $req->description;
+        $productAdd->content = $req->content;
+        $productAdd->price = $req->price;
+        $productAdd->price_L = $req->price_L;
+        $productAdd->promotion_price =  $req->promotion_price;
+        $get_image = $req->file('image');
+        $name_image = current(explode('.', $get_image->getClientOriginalName()));
+        $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
+        $get_image->move('source/images', $new_image);
+        $productAdd->image = $new_image;
+        $productAdd->save();
+        Session::put('success', 'Add sản phẩm thành công');
+        return Redirect::to('product/index');
     }
     public function delete($id)
     {
-        if (Auth::user()->role_id == 1) {
-            $this->productReposotory->delete($id);
-            Session::put('success', 'Delete sản phẩm thành công');
-            return Redirect::to('product/index');
-        }
+
+        $this->productReposotory->delete($id);
+        Session::put('success', 'Delete sản phẩm thành công');
+        return Redirect::to('product/index');
     }
     public function update(Request $req, $id)
     {
-        if (Auth::user()->role_id == 1) {
-            $productAdd = Product::find($id);
-            $productAdd->category_id = $req->category_id;
-            $productAdd->name = $req->name;
-            $productAdd->price = $req->price;
-            $productAdd->description = $req->description;
-            $productAdd->content = $req->content;
-            $productAdd->price = $req->price;
-            $productAdd->price_L = $req->price_L;
-            $productAdd->promotion_price =  $req->promotion_price;
 
-            $get_image = $req->file('image');
-            if ($get_image) {
-                $name_image = current(explode('.', $get_image->getClientOriginalName()));
-                $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
-                $get_image->move('img/', $new_image);
-                $productAdd->image = $new_image;
-                $productAdd->save();
-                Session::put('success', 'Delete sản phẩm thành công');
-                return Redirect::to('product/index');
-            } else {
-                $productAdd->save();
-                Session::put('success', 'Delete sản phẩm thành công');
-                return Redirect::to('product/index');
-            }
+        $productAdd = Product::find($id);
+        $productAdd->category_id = $req->category_id;
+        $productAdd->name = $req->name;
+        $productAdd->price = $req->price;
+        $productAdd->description = $req->description;
+        $productAdd->content = $req->content;
+        $productAdd->price = $req->price;
+        $productAdd->price_L = $req->price_L;
+        $productAdd->promotion_price =  $req->promotion_price;
+
+        $get_image = $req->file('image');
+        if ($get_image) {
+            $name_image = current(explode('.', $get_image->getClientOriginalName()));
+            $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
+            $get_image->move('img/', $new_image);
+            $productAdd->image = $new_image;
+            $productAdd->save();
+            Session::put('success', 'Delete sản phẩm thành công');
+            return Redirect::to('product/index');
+        } else {
+            $productAdd->save();
+            Session::put('success', 'Delete sản phẩm thành công');
+            return Redirect::to('product/index');
         }
     }
 
@@ -109,8 +99,7 @@ class ProductController extends Controller
     {
         if ($request->ajax()) {
             $output = '';
-            $products = Product::
-                                    where('name', 'LIKE', '%' . $request->search . '%')->get();
+            $products = Product::where('name', 'LIKE', '%' . $request->search . '%')->get();
 
 
             foreach ($products as $key => $item) {

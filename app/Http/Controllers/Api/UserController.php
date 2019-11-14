@@ -8,18 +8,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Repositories\User\UserRepositoryInterface;
+
 class UserController extends Controller
 {
 
     protected $successStatus = 200;
     protected $userReposotory;
 
-    public function __construct(UserRepositoryInterface $userReposotory) {
+    public function __construct(UserRepositoryInterface $userReposotory)
+    {
         $this->userReposotory = $userReposotory;
     }
 
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
@@ -29,30 +32,45 @@ class UserController extends Controller
             'c_password' => 'required|same:password',
         ]);
         if ($validator->fails()) {
-                    return response()->json(['error'=>$validator->errors()], 401);
-                }
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $emailValidate = $request->email;
+        $phoneValidate = $request->phone;
+        $userPhone = User::where('phone', $phoneValidate)->first();
+        $userEmail = User::where('email', $emailValidate)->first();
+        if ($userPhone) {
+            return response()->json(['error' => 'Số điên thoại đã tồn tại'], 401);
+        }
+        if ($userEmail) {
+            return response()->json(['error' => 'Email đã tồn tại'], 401);
+        }
+
         $input = $request->all();
-                $input['password'] = bcrypt($input['password']);
-                $user = User::create($input);
-                $success['token'] =  $user->createToken('MyApp')->accessToken;
-                $success['name'] =  $user->name;
-        return response()->json(['success'=>$success], $this->successStatus);
+        $input['password'] = bcrypt($input['password']);
+        $input['is_admin'] = 0;
+        $input['role_id'] = 3;
+        $user = User::create($input);
+        $success['token'] =  $user->createToken('MyApp')->accessToken;
+        $success['name'] =  $user->name;
+        return response()->json(['success' => $success], $this->successStatus);
     }
 
 
-    public function login(Request $request){
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+    public function login(Request $request)
+    {
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')->accessToken;
             return response()->json(['success' => $success], $this->successStatus);
         }
         $user = User::where('phone', $request->phone)->first();
-        if($user){
+        if ($user) {
 
             $success['token'] =  $user->createToken('MyApp')->accessToken;
             return response()->json(['success' => $success], $this->successStatus);
-        }else{
-            return response()->json(['error'=>'Unauthorised'], 401);
+        } else {
+            return response()->json(['error' => 'Unauthorised'], 401);
         }
     }
 
@@ -61,7 +79,8 @@ class UserController extends Controller
         $user = Auth::user();
         return response()->json(['success' => $user], $this->successStatus);
     }
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 
         $input = $request->all();
 
