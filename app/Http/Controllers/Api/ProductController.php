@@ -27,4 +27,8 @@ class ProductController extends Controller
 
         return response()->json($products, $this->successStatus);
     }
+
+    public function GetProductById($id){
+        return response()->json($this->productReposotory->find($id), $this->successStatus);
+    }
 }

@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
     });
     //Management admin
 
-    Route::post('api/orders', 'OrderController@order');
+
 
 
     //Customer
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
         // stores
         Route::get('store/index', 'StoreController@index')->name('store.index');
-
+        
         // admins
         Route::get('admin/index', 'AdminController@index')->name('admin.index'); //$url = route('profile', ['id' => 1]);
         Route::post('admin/add', 'AdminController@store')->name('admin.add');

@@ -14,12 +14,12 @@ class Order extends Model
         'store_code',
         'table'
     ];
-
+    public $timestamps = false;
     public function customer(){
         return $this->belongsTo('App\Customer', 'customer_id');
     }
 
     public function orderdetails(){
-        return $this->hasMany('App\OrderDetails', 'order_id');
+        return $this->hasMany('App\OrderDetail', 'order_id');
     }
 }

@@ -23,11 +23,12 @@ Route::post('register', 'Api\UserController@store');
 Route::group(['middleware' => ['auth:api']], function(){
     Route::post('details', 'Api\UserController@details');
     Route::post('update', 'Api\UserController@update');
-
-
-    
-
+    Route::post('orders', 'OrderController@order');
+    Route::post('historyorder', 'OrderController@historyorder');
+    Route::post('historyorderdetails', 'OrderController@historyorderdetails');
 });
 Route::get('products/{id}', 'Api\ProductController@GetProductByCategory');
 //Route::get('products', 'Api\ProductController@index');
 Route::get('categories', 'Api\CategoryController@index');
+Route::get('product/{id}', 'Api\ProductController@GetProductById');
+
