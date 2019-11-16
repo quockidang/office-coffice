@@ -25,29 +25,21 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
             'address' => 'required',
-            'phone' => 'required',
-            'c_password' => 'required|same:password',
+            'phone' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        $emailValidate = $request->email;
+
         $phoneValidate = $request->phone;
         $userPhone = User::where('phone', $phoneValidate)->first();
-        $userEmail = User::where('email', $emailValidate)->first();
         if ($userPhone) {
             return response()->json(['error' => 'Số điên thoại đã tồn tại'], 401);
         }
-        if ($userEmail) {
-            return response()->json(['error' => 'Email đã tồn tại'], 401);
-        }
-
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
+
         $input['is_admin'] = 0;
         $input['role_id'] = 3;
         $user = User::create($input);
@@ -66,7 +58,6 @@ class UserController extends Controller
         }
         $user = User::where('phone', $request->phone)->first();
         if ($user) {
-
             $success['token'] =  $user->createToken('MyApp')->accessToken;
             return response()->json(['success' => $success], $this->successStatus);
         } else {
@@ -81,11 +72,9 @@ class UserController extends Controller
     }
     public function update(Request $request)
     {
-
         $input = $request->all();
-
         $user = $this->userReposotory->update(Auth::id(), $input);
         //$user = Auth::user()->update($input);
-        return response()->json(['success' => $user], $this->successStatus);
+        return response()->json($user, $this->successStatus);
     }
 }
