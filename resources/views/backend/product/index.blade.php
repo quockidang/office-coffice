@@ -167,7 +167,6 @@
             </td>
         </tr>
         @endforeach
-
     </tbody>
 </table>
 <div style="margin-left: 500px">{!! $products->links() !!}</div>

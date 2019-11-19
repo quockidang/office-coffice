@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblOrders extends Migration
+class TblOrder extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,14 @@ class TblOrders extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('customer_id');
-            $table->dateTime('orderdate');
-            $table->integer('status');
+            $table->increments('id');
+            $table->longText('products');
+            $table->decimal('totalPrice');
+            $table->unsignedInteger('userID')->nullable();
+            $table->String('name');
+            $table->text('address');
+            $table->String('transactionID');
+            $table->timestamps();
         });
     }
 

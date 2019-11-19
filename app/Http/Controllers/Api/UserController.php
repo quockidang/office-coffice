@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Repositories\User\UserRepositoryInterface;
-
+use Illuminate\Support\Carbon;
 class UserController extends Controller
 {
 
@@ -26,7 +26,8 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'address' => 'required',
-            'phone' => 'required'
+            'phone' => 'required',
+
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
@@ -45,6 +46,7 @@ class UserController extends Controller
         $user = User::create($input);
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
+
         return response()->json(['success' => $success], $this->successStatus);
     }
 
@@ -73,8 +75,14 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $input = $request->all();
+        $input['birthday'] = date('Y-m-d', strtotime($input['birthday']));
         $user = $this->userReposotory->update(Auth::id(), $input);
         //$user = Auth::user()->update($input);
         return response()->json($user, $this->successStatus);
+    }
+
+    public function getkey(){
+        $userID = auth('api')->user()->getKey();
+        return response()->json($userID, 200);
     }
 }

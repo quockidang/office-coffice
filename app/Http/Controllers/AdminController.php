@@ -21,7 +21,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $admins = $this->adminRepository->getAll();
+        $admins  = User::where('is_admin', 1)->get();
         return view('backend.admin.index', compact('admins'));
     }
 

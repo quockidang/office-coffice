@@ -77,7 +77,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>For Admin</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -336,6 +336,7 @@
 
     <!-- Core plugin JavaScript-->
     <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+<script src="{{asset('js/sb-admin-2.min.js')}}"></script>
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('ckfinder/ckfinder.js')}}"></script>
     <script src="{{asset('vendor/toastr-master/toastr.js')}}"></script>
