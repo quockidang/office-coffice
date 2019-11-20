@@ -20,7 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/json', 'HomeController@json');
 Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
     Route::get('/dashboard', function () {
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
         // stores
         Route::get('store/index', 'StoreController@index')->name('store.index');
-        
+
         // admins
         Route::get('admin/index', 'AdminController@index')->name('admin.index'); //$url = route('profile', ['id' => 1]);
         Route::post('admin/add', 'AdminController@store')->name('admin.add');

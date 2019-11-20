@@ -47,7 +47,7 @@ class UserController extends Controller
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
 
-        return response()->json(['success' => $success], $this->successStatus);
+        return response()->json($success, $this->successStatus);
     }
 
 
@@ -56,12 +56,12 @@ class UserController extends Controller
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
+            return response()->json($success, $this->successStatus);
         }
         $user = User::where('phone', $request->phone)->first();
         if ($user) {
             $success['token'] =  $user->createToken('MyApp')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
+            return response()->json($success, $this->successStatus);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
@@ -70,14 +70,17 @@ class UserController extends Controller
     public function details()
     {
         $user = Auth::user();
-        return response()->json(['success' => $user], $this->successStatus);
+        return response()->json($user, $this->successStatus);
     }
     public function update(Request $request)
     {
         $input = $request->all();
-        $input['birthday'] = date('Y-m-d', strtotime($input['birthday']));
+        if($input->birthday){
+            $input['birthday'] = date('Y-m-d', strtotime($input['birthday']));
+            $user = $this->userReposotory->update(Auth::id(), $input);
+            return response()->json($user, $this->successStatus);
+        }
         $user = $this->userReposotory->update(Auth::id(), $input);
-        //$user = Auth::user()->update($input);
         return response()->json($user, $this->successStatus);
     }
 

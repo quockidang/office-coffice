@@ -12,5 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        Model::unguard();
+        $this->call(DataTableSeeder::class);
+        Model::reguard();
     }
 }

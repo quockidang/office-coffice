@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
+
+use function GuzzleHttp\json_decode;
+
 class ProductController extends Controller
 {
     protected $successStatus = 200;
@@ -30,5 +33,16 @@ class ProductController extends Controller
 
     public function GetProductById($id){
         return response()->json($this->productReposotory->find($id), $this->successStatus);
+    }
+
+    public function jsondecode(Request $request){
+
+        $string = $request->json;
+        $array = json_decode($string);
+        if(gettype($array) === "array"){
+           return  response()->json($array);
+        }
+
+        return response()->json('error');
     }
 }

@@ -23,9 +23,7 @@ Route::post('register', 'Api\UserController@store');
 Route::group(['middleware' => ['auth:api']], function(){
     Route::post('details', 'Api\UserController@details');
     Route::post('update', 'Api\UserController@update');
-    Route::post('orders', 'OrderController@order');
-
-    
+    Route::post('orders', 'Api\OrderController@order');
 
     Route::get('getkey', 'Api\UserController@getkey');
 });
@@ -34,3 +32,4 @@ Route::get('products/{id}', 'Api\ProductController@GetProductByCategory');
 Route::get('categories', 'Api\CategoryController@index');
 Route::get('product/{id}', 'Api\ProductController@GetProductById');
 
+Route::post('array', 'Api\ProductController@jsondecode');
