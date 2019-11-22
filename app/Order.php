@@ -18,7 +18,7 @@ class Order extends Model
         'order_date',
     ];
 
-    protected $timestamps = false;
+    //protected $timestamps = false;
 
     public function orderitems(){
         $this->hasMany('App\OrderItem', 'order_id');

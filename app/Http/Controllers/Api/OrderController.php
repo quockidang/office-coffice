@@ -32,12 +32,14 @@ class OrderController extends Controller
         foreach($products as $product){
             $item = new OrderItem;
             $item->order_id = $order->id;
-            $item->product_id = $product->product_id;
+            $item->product_id = $product->id;
             $item->price = $product->price;
-            $item->quantity = $product->quantity;
+            $item->quantity = $product->slChon;
             $item->save();
         }
 
         return response()->json($order, 200);
     }
 }
+
+
