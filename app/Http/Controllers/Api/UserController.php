@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Carbon;
+
 class UserController extends Controller
 {
 
@@ -75,7 +76,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $input = $request->all();
-        if($input->birthday){
+        if($request->birthday){
             $input['birthday'] = date('Y-m-d', strtotime($input['birthday']));
             $user = $this->userReposotory->update(Auth::id(), $input);
             return response()->json($user, $this->successStatus);

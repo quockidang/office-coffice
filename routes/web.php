@@ -58,5 +58,6 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
         Route::get('product/delete/{id}', 'ProductController@delete')->name('product.delete');
         Route::get('product/viewupdate/{id}', 'ProductController@viewupdate')->name('product.viewupdate');
         Route::get('search-product', 'ProductController@search');
+        Route::get('product/category/{id}', 'ProductController@getAllByCategory')->name('product.bycateogry');
     });
 });

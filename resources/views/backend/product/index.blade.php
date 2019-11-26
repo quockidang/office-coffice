@@ -17,6 +17,7 @@
     </span>
     <span class="text">New Product</span>
 </button>
+
 <input style="width: 20%" class="form-control mr-sm-2" name="search" id="searchProduct" type="search"
     placeholder="Tìm kiếm....">
 
@@ -106,6 +107,16 @@
         </div>
     </div>
 </div>
+<div class="dropdown pt-2 ">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Danh mục sản phẩm
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        @foreach ($categories as $item)
+    <a class="dropdown-item" href="{{ route('product.bycateogry', ['id' => $item->id])}}">{{$item->name}}</a>
+        @endforeach
+    </div>
+  </div>
 <table class="table table-striped table-hover table-sm">
     <thead class="thead">
         <tr>

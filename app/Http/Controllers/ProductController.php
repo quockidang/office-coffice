@@ -27,6 +27,7 @@ class ProductController extends Controller
         //$products = $this->productReposotory->getAll()->simplePaginate(5);
         //$products = $products
         $products = Product::simplePaginate(5);
+        $categories = Category::all();
         Session::put('success', 'Load danh sách sản phẩm thành công');
         return view('backend.product.index', compact('products'));
     }
@@ -77,7 +78,7 @@ class ProductController extends Controller
         if ($get_image) {
             $name_image = current(explode('.', $get_image->getClientOriginalName()));
             $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
-            $get_image->move('img/', $new_image);
+            $get_image->move('source/images', $new_image);
             $productAdd->image = $new_image;
             $productAdd->save();
             Session::put('success', 'Delete sản phẩm thành công');
@@ -153,5 +154,13 @@ class ProductController extends Controller
             }
             return Response($output);
         }
+    }
+
+    public function getAllByCategory($id){
+        $products = Product::where('category_id', $id)->get();
+
+        return view();
+
+
     }
 }

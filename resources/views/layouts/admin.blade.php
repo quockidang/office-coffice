@@ -44,7 +44,7 @@
         {{Session::put('success', null)}}
         {{Session::put('error', null)}}
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-warning sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul style="background-color: #32312f" class="navbar-nav  sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" style="background-color: white"
@@ -59,7 +59,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="{{URL::to('/home')}}">
+                <a class="nav-link" href="{{URL::to('/dashboard')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
