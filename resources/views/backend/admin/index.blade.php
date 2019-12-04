@@ -100,14 +100,25 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col">Name</th>
+            <th scope="col">status</th>
             <th scope="col">Mã CH</th>
             <th scope="col">Action</th>
+
         </tr>
     </thead>
     <tbody>
         @foreach ($admins as $item)
         <tr>
             <th scope="row">{{$item->name}}</th>
+            <td>
+                <?php
+                    if($item->status == 1){
+                        echo '<span class="badge badge-success">Kích hoạt</span>';
+                    }else {
+                        echo '<span class="badge badge-danger">Khóa</span>';
+                    }
+                ?>
+            </td>
             <td>
                 <?php
                     if($item->store_code != null){
@@ -207,13 +218,13 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Xóa tài khoảng</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Khóa tài khoảng</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Bạn có chắn chắn muốn xóa tài khoảng này?</p>
+                                <p>Bạn có chắn chắn muốn khóa tài khoảng này?</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

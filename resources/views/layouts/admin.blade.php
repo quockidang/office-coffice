@@ -24,10 +24,10 @@
     <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
     <!-- Toast notification-->
     <style>
-        #drop{
-    height:150px;
-    overflow-y: scroll;
-}
+        #drop {
+            height: 150px;
+            overflow-y: scroll;
+        }
     </style>
 </head>
 
@@ -35,49 +35,35 @@
 
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <input type="text" hidden id="success" value="{{Session::get('success')}}">
-        <input type="text" hidden id="error" value="{{Session::get('error')}}">
         <?php
             $store_code = Auth::user()->store_code;
             echo '<input id="store_code" type="text" hidden value="'. $store_code .'">'
         ?>
-        {{Session::put('success', null)}}
-        {{Session::put('error', null)}}
+
         <!-- Sidebar -->
         <ul style="background-color: #32312f" class="navbar-nav  sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" style="background-color: white"
-                href="{{URL::to('/home')}}">
+                href="{{URL::to('/dashboard')}}">
                 <div class="sidebar-brand-text mx-3">
-                    <img src="{{asset('img/Office_logo.png')}}" alt="" srcset="" width="100%">
+                    <img src="{{asset('img/Office_logo.png')}}" width="80%">
                 </div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{URL::to('/dashboard')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Interface
-            </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>For Admin</span>
+                    <span>Chỉ dành cho sếp</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -90,18 +76,19 @@
                     </div>
                 </div>
             </li>
-
+            <!-- Divider -->
+            <hr class="sidebar-divider">
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
+                    <span>Thống kê</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
+                        <h6 class="collapse-header">Tùy chọn thống kê:</h6>
                         <a class="collapse-item" href="utilities-color.html">Colors</a>
                         <a class="collapse-item" href="utilities-border.html">Borders</a>
                         <a class="collapse-item" href="utilities-animation.html">Animations</a>
@@ -113,44 +100,12 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-                    aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
+            <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('order.byday')}}"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    <span class="font-weight-bold">Orders</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item active" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
             </li>
 
             <!-- Divider -->
@@ -206,7 +161,8 @@
                         </li>
 
                         <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1 dropdown-notifications"  data-spy="scroll" data-target=".dropdown-item" data-offset="50">
+                        <li class="nav-item dropdown no-arrow mx-1 dropdown-notifications" data-spy="scroll"
+                            data-target=".dropdown-item" data-offset="50">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i data-count="0" class="fas fa-bell fa-fw"></i>
@@ -336,7 +292,7 @@
 
     <!-- Core plugin JavaScript-->
     <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-<script src="{{asset('js/sb-admin-2.min.js')}}"></script>
+    <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('ckfinder/ckfinder.js')}}"></script>
     <script src="{{asset('vendor/toastr-master/toastr.js')}}"></script>
@@ -383,11 +339,6 @@
         var newNotificationHtml = `
           <li class="notification active">
               <div class="media">
-                <div class="media-left">
-                  <div class="media-object">
-                    <img src="https://api.adorable.io/avatars/71/`+avatar+`.png" class="img-circle" alt="50x50" style="width: 50px; height: 50px;">
-                  </div>
-                </div>
                 <div class="media-body">
                   <strong class="notification-title">KH:  `+data.name+`</strong>
                   <p class="notification-desc"> Bàn: ` +data.table+`</p>
@@ -412,5 +363,4 @@
     </script>
     @yield('script')
 </body>
-
 </html>

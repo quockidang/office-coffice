@@ -15,10 +15,10 @@ class CheckRole
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->role_id == 1){
+        if(auth()->user()->role_id == 1 && auth()->user()->status == 1){
             return $next($request);
         }
 
-        return redirect('dashboard');
+        return redirect('order/index');
     }
 }

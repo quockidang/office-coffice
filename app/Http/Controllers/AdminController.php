@@ -43,13 +43,16 @@ class AdminController extends Controller
         $input['password'] = bcrypt($input['password']);
         $input['is_admin'] = 1;
         $input['role_id'] = 2;
+        $input['status'] = 1;
         $user = User::create($input);
 
         Session::put('success', 'Tạo tài khoảng thành công');
         return redirect()->route('admin.index');
     }
     public function delete($id){
-        $this->adminRepository->delete($id);
+        $user = $this->adminRepository->find($id);
+        $user->status = 0;
+        $user->save();
         Session::put('success', 'Xóa tài khoảng thành công');
         return redirect()->route('admin.index');
     }

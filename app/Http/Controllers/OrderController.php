@@ -6,63 +6,52 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Order;
-use App\OrderDetail;
+use App\OrderItem;
 use App\Product;
 use Illuminate\Support\Carbon;
-use Pusher\Pusher;
+use PDF;
+
 class OrderController extends Controller
 {
-    protected $successStatusCode = 200;
-
-    public function order(Request $request){
-        $user = Auth::user();
-
-        $order = new Order;
-        $order->customer_id = $user->id;
-        $order->orderdate = Carbon::now('Asia/Ho_Chi_Minh'); // 2018-10-18 21:15:43
-        $order->store_code = $request->store_code;
-        $order->status = 0; // chua xu li
-        $order->table = $request->table;
-        $order->save();
 
 
-        $orderDetails = new OrderDetail;
-        $orderDetails->order_id = $order->id;
-        $orderDetails->product_id = $request->product_id;
-        $orderDetails->price = $request->price;
-        $orderDetails->quantity = $request->quantity;
+    public function index()
+    {
+        $user = auth('web')->user();
 
-        $orderDetails->save();
-
-        $data['store_code'] = $request->store_code;
-        $data['table'] = $request->table;
-        $data['name'] = $user->name;
-        $data['product'] = Product::find($request->product_id)->name;
-        $data['price'] = $request->price;
-            $options = array(
-                'cluster' => 'ap1',
-                'encrypted' => true
-            );
-            $pusher = new Pusher(
-                env('PUSHER_APP_KEY'),
-                env('PUSHER_APP_SECRET'),
-                env('PUSHER_APP_ID'),
-                $options
-            );
-
-            $pusher->trigger('Notify', 'send-message', $data);
-
-
-        return response()->json('sucsess', 200);
+        $date = date('2019-11-22');
+        $orders = Order::where('created_at', 'LIKE', '%' . $date . '%')->where('status', 1)->where('store_code', $user->store_code)->get();
+        return view('backend.order.index', compact('orders'));
+    }
+    public function orderdetails($id)
+    {
+        $order = Order::find($id);
+        $orderItems = OrderItem::where('order_id', $id)->get();
+        foreach ($orderItems as $item) {
+            $product = Product::find($item->product_id);
+            $item->product_id = $product;
+        }
+        return view('backend.order.detail', compact('order', 'orderItems'));
     }
 
-    public function historyorder(){
-        $user = Auth::user();
-        return response()->json($user->orders, $this->successStatusCode);
-    }
+    public function printBill($id)
+    {
+        $order = Order::find($id);
+        $orderItems = OrderItem::where('order_id', $id)->get();
+        foreach ($orderItems as $item) {
+            $product = Product::find($item->product_id);
+            $item->product_id = $product;
+        }
+        // return view('backend.order.bill');
+        $data = ['title' => 'Welcome to ItSolutionStuff.com'];
+        switch ($order->store_code) {
+            case 'CH53MT':
+                $order->store_code = '102 Tân Hòa 2, P. Hiệp Phú, Quận 9, TP HCM';
+        }
 
-    public function historyorderdetails(Request $request){
-        $order = Order::find($request->id);
-        return response()->json($order->orderdetails, $this->successStatusCode);
+        $data['order'] = $order;
+        $data['orderItems'] = $orderItems;
+        $pdf = PDF::loadView('backend.order.bill', $data);
+        return $pdf->setPaper(array(0, 0, 280, 450))->stream();
     }
 }

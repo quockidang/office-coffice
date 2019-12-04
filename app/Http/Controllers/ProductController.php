@@ -158,9 +158,8 @@ class ProductController extends Controller
 
     public function getAllByCategory($id){
         $products = Product::where('category_id', $id)->get();
+        $category = Category::find($id);
 
-        return view();
-
-
+        return view('backend.product.bycategory', compact('products', 'category'));
     }
 }

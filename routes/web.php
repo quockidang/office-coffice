@@ -23,18 +23,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/json', 'HomeController@json');
 Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
-    Route::get('/dashboard', function () {
-        return view('backend.dashboard');
-    });
-    //Management admin
+    //For Nhân viên
+    Route::get('order/index', 'OrderController@index')->name('order.byday');
+    Route::get('order/details/{id}', 'OrderController@orderdetails')->name('order.details');
+    Route::get('order/print/{id}', 'OrderController@printBill')->name('printbill');
 
 
-
-
-    //Customer
-    Route::get('customer/index', 'UserController@index')->name('customer.index');
-
-
+    //For Sếp
     Route::group(['middleware' => ['check_role']], function () {
 
         // stores
@@ -59,5 +54,8 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
         Route::get('product/viewupdate/{id}', 'ProductController@viewupdate')->name('product.viewupdate');
         Route::get('search-product', 'ProductController@search');
         Route::get('product/category/{id}', 'ProductController@getAllByCategory')->name('product.bycateogry');
+
+         //Customer
+        Route::get('customer/index', 'UserController@index')->name('customer.index');
     });
 });

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use App\OrderItem;
 use Illuminate\Support\Carbon;
-
+use Pusher\Pusher;
 use function GuzzleHttp\json_decode;
 
 class OrderController extends Controller
@@ -38,7 +38,39 @@ class OrderController extends Controller
             $item->save();
         }
 
+
+        $data['store_code'] = $request->store_code;
+        $data['table'] = $request->table;
+        $data['name'] = $user->name;
+        $data['price'] = $request->total_price;
+        $data['products'] = $products;
+            $options = array(
+                'cluster' => 'ap1',
+                'encrypted' => true
+            );
+            $pusher = new Pusher(
+                env('PUSHER_APP_KEY'),
+                env('PUSHER_APP_SECRET'),
+                env('PUSHER_APP_ID'),
+                $options
+            );
+
+            $pusher->trigger('Notify', 'send-message', $data);
+
         return response()->json($order, 200);
+    }
+    protected $successStatusCode = 200;
+
+
+
+    public function historyorder(){
+        $user = auth('api')->user();
+        return response()->json($user->orders, $this->successStatusCode);
+    }
+
+    public function historyorderdetails(Request $request){
+        $order = Order::find($request->id);
+        return response()->json($order->orderdetails, $this->successStatusCode);
     }
 }
 
